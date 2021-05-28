@@ -10,7 +10,7 @@ dataSources:
     source:
       address: '0xcA143Ce32Fe78f1f7019d7d551a6402fC5350c73'
       abi: Factory
-      startBlock: 7776693
+      startBlock: 7797703
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.3
@@ -55,3 +55,5 @@ templates:
       eventHandlers:
         - event: Swap(indexed address,uint256,uint256,uint256,uint256,indexed address)
           handler: handleSwap
+        - event: Sync(uint112,uint112)
+          handler: handleSync
