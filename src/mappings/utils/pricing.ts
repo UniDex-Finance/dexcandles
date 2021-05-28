@@ -138,8 +138,11 @@ export function getBNBQuotePrice(): BigDecimal {
     let path: Address[] = [Address.fromString(USDT_ADDRESS), Address.fromString(WBNB_ADDRESS)];
     let router = Router.bind(Address.fromString(ROUTER_ADDRESS));
     let amountsOut: BigInt = BigInt.fromI32(1).times(exponentToBigInt(BigInt.fromI32(18)));
-    let price = router.try_getAmountsIn(amountsOut, path).value;
-    return price[0].divDecimal(exponentToBigDecimal(BigInt.fromI32(18)));
+    let price = router.try_getAmountsIn(amountsOut, path);
+    if (price.reverted) {
+        return ZERO_BD;
+    }
+    return price.value[0].divDecimal(exponentToBigDecimal(BigInt.fromI32(18)));
 }
 
 // token where amounts should contribute to tracked volume and liquidity
