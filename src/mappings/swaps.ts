@@ -117,7 +117,11 @@ export function handleSwap(event: Swap): void {
         candle.lastBlock = event.block.number.toI32();
         candle.token0TotalAmount = candle.token0TotalAmount.plus(token0Amount);
         candle.token1TotalAmount = candle.token1TotalAmount.plus(token1Amount);
-        candle.tradeAmountUSD = candle.token1TotalAmount.times(bundle.bnbPrice);
+        if (token1.id == '0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c') {
+            candle.tradeAmountUSD = candle.token1TotalAmount.times(bundle.bnbPrice);
+        } else {
+            candle.tradeAmountUSD = candle.token0TotalAmount.times(bundle.bnbPrice);
+        }
         candle.save();
     }
 }
