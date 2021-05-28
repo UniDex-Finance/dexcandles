@@ -68,8 +68,6 @@ export function handleSwap(event: Swap): void {
         return;
     }
 
-
-
     let price = token0Amount.div(token1Amount);
     let tokens = concat(Bytes.fromHexString(pair.token0), Bytes.fromHexString(pair.token1));
     let timestamp = event.block.timestamp.toI32();
