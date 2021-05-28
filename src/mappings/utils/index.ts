@@ -1,8 +1,8 @@
 /* eslint-disable prefer-const */
 import { BigInt, BigDecimal, Address } from "@graphprotocol/graph-ts";
-import { ERC20 } from "../../types/Factory/ERC20";
-import { ERC20SymbolBytes } from "../../types/Factory/ERC20SymbolBytes";
-import { ERC20NameBytes } from "../../types/Factory/ERC20NameBytes";
+import { BEP20 } from "../../types/Factory/BEP20";
+import { BEP20SymbolBytes } from "../../types/Factory/BEP20SymbolBytes";
+import { BEP20NameBytes } from "../../types/Factory/BEP20NameBytes";
 import { Factory as FactoryContract } from "../../types/Factory/Factory";
 
 export let ADDRESS_ZERO = "0x0000000000000000000000000000000000000000";
@@ -36,8 +36,8 @@ export function isNullBnbValue(value: string): boolean {
 }
 
 export function fetchTokenSymbol(tokenAddress: Address): string {
-    let contract = ERC20.bind(tokenAddress);
-    let contractSymbolBytes = ERC20SymbolBytes.bind(tokenAddress);
+    let contract = BEP20.bind(tokenAddress);
+    let contractSymbolBytes = BEP20SymbolBytes.bind(tokenAddress);
 
     let symbolValue = "unknown";
     let symbolResult = contract.try_symbol();
@@ -55,8 +55,8 @@ export function fetchTokenSymbol(tokenAddress: Address): string {
 }
 
 export function fetchTokenName(tokenAddress: Address): string {
-    let contract = ERC20.bind(tokenAddress);
-    let contractNameBytes = ERC20NameBytes.bind(tokenAddress);
+    let contract = BEP20.bind(tokenAddress);
+    let contractNameBytes = BEP20NameBytes.bind(tokenAddress);
 
     let nameValue = "unknown";
     let nameResult = contract.try_name();
@@ -74,7 +74,7 @@ export function fetchTokenName(tokenAddress: Address): string {
 }
 
 export function fetchTokenDecimals(tokenAddress: Address): BigInt {
-    let contract = ERC20.bind(tokenAddress);
+    let contract = BEP20.bind(tokenAddress);
     let decimalValue = null;
     let decimalResult = contract.try_decimals();
     if (!decimalResult.reverted) {
