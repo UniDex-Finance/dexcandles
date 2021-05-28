@@ -135,7 +135,7 @@ export function exponentToBigInt(decimals: BigInt): BigInt {
 }
 
 export function getBNBQuotePrice(): BigDecimal {
-    let path = [Address.fromString(USDT_ADDRESS), Address.fromString(WBNB_ADDRESS)];
+    let path: Address[] = [Address.fromString(USDT_ADDRESS), Address.fromString(WBNB_ADDRESS)];
     let router = Router.bind(Address.fromString(ROUTER_ADDRESS));
     let amountsOut: BigInt = BigInt.fromI32(10).times(exponentToBigInt(BigInt.fromI32(18)));
     let price = router.try_getAmountsIn(amountsOut, path).value;
