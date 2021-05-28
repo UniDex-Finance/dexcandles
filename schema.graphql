@@ -1,8 +1,41 @@
+type Token @entity {
+  "ID (address)"
+  id: ID!
+
+  "Name"
+  name: String!
+  "Symbol"
+  symbol: String!
+  "Decimals"
+  decimals: BigInt!
+  # liquidity across all pairs
+  totalLiquidity: BigDecimal!
+  # derived prices
+  derivedBNB: BigDecimal
+  derivedUSD: BigDecimal
+}
+
 type Pair @entity {
     id: ID! # address
-    token0: Bytes!
-    token1: Bytes!
+    token0: Token!
+    token1: Token!
     factory: ID! #factory address
+    reserve0: BigDecimal!
+    reserve1: BigDecimal!
+
+    # Price in terms of the asset pair
+    token0Price: BigDecimal!
+    token1Price: BigDecimal!
+
+    reserveBNB: BigDecimal!
+    reserveUSD: BigDecimal!
+}
+
+type Bundle @entity {
+  id: ID!
+
+  "BNB price, in USD"
+  bnbPrice: BigDecimal!
 }
 
 type Candle @entity {
@@ -10,9 +43,9 @@ type Candle @entity {
     time: Int!
     period: Int!
     lastBlock: Int!
-    token0: Bytes!
-    token1: Bytes!
-
+    token0: Token!
+    token1: Token!
+    lastBnbPrice: BigDecimal!
     token0TotalAmount: BigInt!
     token1TotalAmount: BigInt!
     open: BigDecimal!
