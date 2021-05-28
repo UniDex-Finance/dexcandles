@@ -3,6 +3,7 @@ import { BigDecimal, Address, BigInt } from "@graphprotocol/graph-ts/index";
 import { Pair, Bundle, Token } from "../../types/schema";
 import { ZERO_BD, factoryContract, ADDRESS_ZERO, ONE_BD, fetchTokenSymbol, fetchTokenName, fetchTokenDecimals, ZERO_BI } from "./index";
 import { Router } from "../../types/Factory/Router";
+import { exponentToBigDecimal } from "./index";
 
 let ROUTER_ADDRESS = "0x10ED43C718714eb63d5aA57B78B54704E256024E";
 let WBNB_ADDRESS = "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c";
@@ -130,7 +131,7 @@ export function getBNBQuotePrice(): BigDecimal {
     let router = Router.bind(Address.fromString(ROUTER_ADDRESS));
     let amountsOut: BigInt = BigInt.fromI32(10 * 10 ** 18);
     let price = router.try_getAmountsIn(amountsOut, path).value;
-    return price[0].toBigDecimal();
+    return price[0].divDecimal(exponentToBigDecimal(BigInt.fromI32(18)));
 }
 
 // token where amounts should contribute to tracked volume and liquidity
