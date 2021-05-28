@@ -31,9 +31,9 @@ export function handleNewPair(event: PairCreated): void {
     let token1 = Token.load(event.params.token1.toHex());
     if (token1 == null) {
         token1 = new Token(event.params.token1.toHex());
-        token1.name = fetchTokenName(event.params.token0);
-        token1.symbol = fetchTokenSymbol(event.params.token0);
-        let decimals = fetchTokenDecimals(event.params.token0);
+        token1.name = fetchTokenName(event.params.token1);
+        token1.symbol = fetchTokenSymbol(event.params.token1);
+        let decimals = fetchTokenDecimals(event.params.token1);
         if (decimals === null) {
             return;
         }
