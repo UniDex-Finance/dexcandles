@@ -1,9 +1,11 @@
 /* eslint-disable prefer-const */
 import { BigDecimal, Address } from "@graphprotocol/graph-ts/index";
 import { Pair, Bundle, Token } from "../../types/schema";
-import { ZERO_BD, factoryContract, ADDRESS_ZERO, ONE_BD } from "./index";
+import { ZERO_BD, factoryContract, ADDRESS_ZERO, ONE_BD, fetchTokenSymbol, fetchTokenName, fetchTokenDecimals } from "./index";
 
 let WBNB_ADDRESS = "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c";
+let USDT_ADDRESS = "0x55d398326f99059ff775485246999027b3197955";
+let BUSD_ADDRESS = "0xe9e7cea3dedca5984780bafc599bd69add087d56";
 let BUSD_WBNB_PAIR = "0x58f876857a02d6762e0101bb5c46a8c1ed44dc16"; // created block 589414
 let USDT_WBNB_PAIR = "0x16b9a82891338f9ba80e2d6970fdda79d1eb0dae"; // created block 648115
 
@@ -11,6 +13,97 @@ export function getBnbPriceInUSD(): BigDecimal {
     // fetch eth prices for each stablecoin
     let usdtPair = Pair.load(USDT_WBNB_PAIR); // usdt is token0
     let busdPair = Pair.load(BUSD_WBNB_PAIR); // busd is token1
+    if (usdtPair == null) {
+        let token0 = Token.load(USDT_ADDRESS);
+        if (token0 == null) {
+            token0 = new Token(USDT_ADDRESS);
+            token0.name = fetchTokenName(Address.fromString(USDT_ADDRESS));
+            token0.symbol = fetchTokenSymbol(Address.fromString(USDT_ADDRESS));
+            let decimals = fetchTokenDecimals(Address.fromString(USDT_ADDRESS));
+            if (decimals === null) {
+                return;
+            }
+            token0.decimals = decimals;
+            token0.derivedBNB = ZERO_BD;
+            token0.derivedUSD = ZERO_BD;
+            token0.totalLiquidity = ZERO_BD;
+            token0.save();
+        }
+
+        let token1 = Token.load(WBNB_ADDRESS);
+        if (token1 == null) {
+            token1 = new Token(WBNB_ADDRESS);
+            token1.name = fetchTokenName(Address.fromString(WBNB_ADDRESS));
+            token1.symbol = fetchTokenSymbol(Address.fromString(WBNB_ADDRESS));
+            let decimals = fetchTokenDecimals(Address.fromString(WBNB_ADDRESS));
+            if (decimals === null) {
+                return;
+            }
+            token1.decimals = decimals;
+            token1.derivedBNB = ZERO_BD;
+            token1.derivedUSD = ZERO_BD;
+            token1.totalLiquidity = ZERO_BD;
+            token1.save();
+        }
+
+        usdtPair = new Pair(USDT_WBNB_PAIR);
+        usdtPair.token0 = token0.id;
+        usdtPair.token1 = token1.id;
+        usdtPair.factory = '0xcA143Ce32Fe78f1f7019d7d551a6402fC5350c73';
+        usdtPair.token0Price = ZERO_BD;
+        usdtPair.token1Price = ZERO_BD;
+        usdtPair.reserve0 = ZERO_BD;
+        usdtPair.reserve1 = ZERO_BD;
+        usdtPair.reserveBNB = ZERO_BD;
+        usdtPair.reserveUSD = ZERO_BD;
+        usdtPair.save();
+    }
+
+    if (busdPair == null) {
+        let token0 = Token.load(WBNB_ADDRESS);
+        if (token0 == null) {
+            token0 = new Token(WBNB_ADDRESS);
+            token0.name = fetchTokenName(Address.fromString(WBNB_ADDRESS));
+            token0.symbol = fetchTokenSymbol(Address.fromString(WBNB_ADDRESS));
+            let decimals = fetchTokenDecimals(Address.fromString(WBNB_ADDRESS));
+            if (decimals === null) {
+                return;
+            }
+            token0.decimals = decimals;
+            token0.derivedBNB = ZERO_BD;
+            token0.derivedUSD = ZERO_BD;
+            token0.totalLiquidity = ZERO_BD;
+            token0.save();
+        }
+
+        let token1 = Token.load(BUSD_ADDRESS);
+        if (token1 == null) {
+            token1 = new Token(BUSD_ADDRESS);
+            token1.name = fetchTokenName(Address.fromString(BUSD_ADDRESS));
+            token1.symbol = fetchTokenSymbol(Address.fromString(BUSD_ADDRESS));
+            let decimals = fetchTokenDecimals(Address.fromString(BUSD_ADDRESS));
+            if (decimals === null) {
+                return;
+            }
+            token1.decimals = decimals;
+            token1.derivedBNB = ZERO_BD;
+            token1.derivedUSD = ZERO_BD;
+            token1.totalLiquidity = ZERO_BD;
+            token1.save();
+        }
+
+        busdPair = new Pair(BUSD_WBNB_PAIR);
+        busdPair.token0 = token0.id;
+        busdPair.token1 = token1.id;
+        busdPair.factory = '0xcA143Ce32Fe78f1f7019d7d551a6402fC5350c73';
+        busdPair.token0Price = ZERO_BD;
+        busdPair.token1Price = ZERO_BD;
+        busdPair.reserve0 = ZERO_BD;
+        busdPair.reserve1 = ZERO_BD;
+        busdPair.reserveBNB = ZERO_BD;
+        busdPair.reserveUSD = ZERO_BD;
+        busdPair.save();
+    }
 
     if (busdPair !== null && usdtPair !== null) {
         let totalLiquidityBNB = busdPair.reserve0.plus(usdtPair.reserve1);
