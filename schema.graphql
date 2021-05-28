@@ -46,8 +46,8 @@ type Candle @entity {
     token0: Token!
     token1: Token!
     lastBnbPrice: BigDecimal!
-    token0TotalAmount: BigInt!
-    token1TotalAmount: BigInt!
+    token0TotalAmount: BigDecimal!
+    token1TotalAmount: BigDecimal!
     open: BigDecimal!
     close: BigDecimal!
     low: BigDecimal!
