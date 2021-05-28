@@ -58,19 +58,21 @@ export function handleNewPair(event: PairCreated): void {
 }
 
 export function handleSwap(event: Swap): void {
-    let token0Amount: BigInt = event.params.amount0In.minus(event.params.amount0Out).abs();
-    let token1Amount: BigInt = event.params.amount1Out.minus(event.params.amount1In).abs();
-    if (token0Amount.isZero() || token1Amount.isZero()) {
+    let pair = Pair.load(event.address.toHex());
+    let token0 = Token.load(pair.token0);
+    let token1 = Token.load(pair.token1);
+
+    let token0Amount: BigDecimal = convertTokenToDecimal(event.params.amount0In.minus(event.params.amount0Out).abs(), token0.decimals);
+    let token1Amount: BigDecimal = convertTokenToDecimal(event.params.amount1Out.minus(event.params.amount1In).abs(), token1.decimals);
+    if (token0Amount.equals(ZERO_BD) || token1Amount.equals(ZERO_BD)) {
         return;
     }
 
-    let pair = Pair.load(event.address.toHex());
-    let price = token0Amount.divDecimal(token1Amount.toBigDecimal());
+
+
+    let price = token0Amount.div(token1Amount);
     let tokens = concat(Bytes.fromHexString(pair.token0), Bytes.fromHexString(pair.token1));
     let timestamp = event.block.timestamp.toI32();
-
-    let token0 = Token.load(pair.token0);
-    let token1 = Token.load(pair.token1);
 
     let periods: i32[] = [1 * 60, 5 * 60, 10 * 60, 15 * 60, 30 * 60, 60 * 60, 4 * 60 * 60, 12 * 60 * 60, 24 * 60 * 60, 7 * 24 * 60 * 60];
     for (let i = 0; i < periods.length; i++) {
