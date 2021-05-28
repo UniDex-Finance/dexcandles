@@ -5,7 +5,7 @@ import { PairCreated } from '../types/Factory/Factory'
 import { Pair as PairTemplate } from '../types/templates'
 import { Pair, Candle, Bundle, Token } from '../types/schema'
 import { ZERO_BD, fetchTokenDecimals, fetchTokenName, fetchTokenSymbol, convertTokenToDecimal } from './utils'
-import { getBnbPriceInUSD, findBnbPerToken, getBNBQuotePrice } from './utils/pricing'
+import { findBnbPerToken, getBNBQuotePrice } from './utils/pricing'
 
 export function handleNewPair(event: PairCreated): void {
     let bundle = new Bundle("1");
