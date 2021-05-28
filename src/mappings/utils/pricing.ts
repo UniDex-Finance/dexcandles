@@ -1,7 +1,7 @@
 /* eslint-disable prefer-const */
 import { BigDecimal, Address } from "@graphprotocol/graph-ts/index";
 import { Pair, Bundle, Token } from "../../types/schema";
-import { ZERO_BD, factoryContract, ADDRESS_ZERO, ONE_BD, fetchTokenSymbol, fetchTokenName, fetchTokenDecimals } from "./index";
+import { ZERO_BD, factoryContract, ADDRESS_ZERO, ONE_BD, fetchTokenSymbol, fetchTokenName, fetchTokenDecimals, ZERO_BI } from "./index";
 
 let WBNB_ADDRESS = "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c";
 let USDT_ADDRESS = "0x55d398326f99059ff775485246999027b3197955";
@@ -21,7 +21,7 @@ export function getBnbPriceInUSD(): BigDecimal {
             token0.symbol = fetchTokenSymbol(Address.fromString(USDT_ADDRESS));
             let decimals = fetchTokenDecimals(Address.fromString(USDT_ADDRESS));
             if (decimals === null) {
-                return;
+                decimals = ZERO_BI;
             }
             token0.decimals = decimals;
             token0.derivedBNB = ZERO_BD;
@@ -37,7 +37,7 @@ export function getBnbPriceInUSD(): BigDecimal {
             token1.symbol = fetchTokenSymbol(Address.fromString(WBNB_ADDRESS));
             let decimals = fetchTokenDecimals(Address.fromString(WBNB_ADDRESS));
             if (decimals === null) {
-                return;
+                decimals = ZERO_BI;
             }
             token1.decimals = decimals;
             token1.derivedBNB = ZERO_BD;
@@ -67,7 +67,7 @@ export function getBnbPriceInUSD(): BigDecimal {
             token0.symbol = fetchTokenSymbol(Address.fromString(WBNB_ADDRESS));
             let decimals = fetchTokenDecimals(Address.fromString(WBNB_ADDRESS));
             if (decimals === null) {
-                return;
+                decimals = ZERO_BI;
             }
             token0.decimals = decimals;
             token0.derivedBNB = ZERO_BD;
@@ -83,7 +83,7 @@ export function getBnbPriceInUSD(): BigDecimal {
             token1.symbol = fetchTokenSymbol(Address.fromString(BUSD_ADDRESS));
             let decimals = fetchTokenDecimals(Address.fromString(BUSD_ADDRESS));
             if (decimals === null) {
-                return;
+                decimals = ZERO_BI;
             }
             token1.decimals = decimals;
             token1.derivedBNB = ZERO_BD;
