@@ -102,8 +102,8 @@ export function handleSwap(event: Swap): void {
             candle.open = price;
             candle.low = price;
             candle.high = price;
-            candle.token0TotalAmount = BigInt.fromI32(0);
-            candle.token1TotalAmount = BigInt.fromI32(0);
+            candle.token0TotalAmount = ZERO_BD;
+            candle.token1TotalAmount = ZERO_BD;
         }
         else {
             if (price < candle.low) {
