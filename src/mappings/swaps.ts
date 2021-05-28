@@ -46,6 +46,12 @@ export function handleNewPair(event: PairCreated): void {
     pair.token0 = token0.id;
     pair.token1 = token1.id;
     pair.factory = '0xcA143Ce32Fe78f1f7019d7d551a6402fC5350c73';
+    pair.token0Price = ZERO_BD;
+    pair.token1Price = ZERO_BD;
+    pair.reserve0 = ZERO_BD;
+    pair.reserve1 = ZERO_BD;
+    pair.reserveBNB = ZERO_BD;
+    pair.reserveUSD = ZERO_BD;
     pair.save();
 
     PairTemplate.create(event.params.pair)
