@@ -65,6 +65,7 @@ export function handleSwap(event: Swap): void {
 
     let token0 = Token.load(pair.token0);
     let token1 = Token.load(pair.token1);
+
     let periods: i32[] = [1 * 60, 5 * 60, 10 * 60, 15 * 60, 30 * 60, 60 * 60, 4 * 60 * 60, 12 * 60 * 60, 24 * 60 * 60, 7 * 24 * 60 * 60];
     for (let i = 0; i < periods.length; i++) {
         let time_id = timestamp / periods[i];
@@ -110,6 +111,7 @@ export function handleSwap(event: Swap): void {
         candle.lastBlock = event.block.number.toI32();
         candle.token0TotalAmount = candle.token0TotalAmount.plus(token0Amount);
         candle.token1TotalAmount = candle.token1TotalAmount.plus(token1Amount);
+        candle.tradeAmountUSD = candle.token1TotalAmount.toBigDecimal().times(bundle.bnbPrice);
         candle.save();
     }
 }

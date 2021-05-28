@@ -52,4 +52,5 @@ type Candle @entity {
     close: BigDecimal!
     low: BigDecimal!
     high: BigDecimal!
+    tradeAmountUSD : BigDecimal!
 }
