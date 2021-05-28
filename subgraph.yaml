@@ -18,6 +18,7 @@ dataSources:
       file: ./src/mappings/swaps.ts
       entities:
         - Pair
+        - Token
       abis:
         - name: Factory
           file: ./abis/factory.json
@@ -43,15 +44,10 @@ templates:
       file: ./src/mappings/swaps.ts
       entities:
         - Pair
+        - Token
       abis:
         - name: Pair
           file: ./abis/pair.json
-        - name: ERC20
-          file: ./abis/ERC20.json
-        - name: ERC20NameBytes
-          file: ./abis/ERC20NameBytes.json
-        - name: ERC20SymbolBytes
-          file: ./abis/ERC20SymbolBytes.json
       eventHandlers:
         - event: Swap(indexed address,uint256,uint256,uint256,uint256,indexed address)
           handler: handleSwap
