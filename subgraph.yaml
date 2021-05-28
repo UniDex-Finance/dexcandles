@@ -48,6 +48,8 @@ templates:
       abis:
         - name: Pair
           file: ./abis/pair.json
+        - name: Factory
+          file: ./abis/factory.json
       eventHandlers:
         - event: Swap(indexed address,uint256,uint256,uint256,uint256,indexed address)
           handler: handleSwap
