@@ -11,6 +11,9 @@ export function handleNewPair(event: PairCreated): void {
     let bundle = new Bundle("1");
     bundle.bnbPrice = ZERO_BD;
     bundle.save();
+
+    let timestamp = event.block.timestamp.toI32();
+
     let pair = new Pair(event.params.pair.toHex());
     let token0 = Token.load(event.params.token0.toHex());
     if (token0 == null) {
@@ -25,6 +28,7 @@ export function handleNewPair(event: PairCreated): void {
         token0.derivedBNB = ZERO_BD;
         token0.derivedUSD = ZERO_BD;
         token0.totalLiquidity = ZERO_BD;
+        token0.createdAt = timestamp;
         token0.save();
     }
 
@@ -41,6 +45,7 @@ export function handleNewPair(event: PairCreated): void {
         token1.derivedBNB = ZERO_BD;
         token1.derivedUSD = ZERO_BD;
         token1.totalLiquidity = ZERO_BD;
+        token1.createdAt = timestamp;
         token1.save();
     }
     pair.token0 = token0.id;
@@ -52,6 +57,7 @@ export function handleNewPair(event: PairCreated): void {
     pair.reserve1 = ZERO_BD;
     pair.reserveBNB = ZERO_BD;
     pair.reserveUSD = ZERO_BD;
+    pair.createdAt = timestamp;
     pair.save();
 
     PairTemplate.create(event.params.pair)

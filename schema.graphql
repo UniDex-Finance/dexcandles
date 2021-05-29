@@ -13,6 +13,7 @@ type Token @entity {
   # derived prices
   derivedBNB: BigDecimal
   derivedUSD: BigDecimal
+  createdAt: Int!
 }
 
 type Pair @entity {
@@ -29,6 +30,8 @@ type Pair @entity {
 
     reserveBNB: BigDecimal!
     reserveUSD: BigDecimal!
+
+    createdAt: Int!
 }
 
 type Bundle @entity {
