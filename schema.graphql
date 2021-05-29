@@ -1,3 +1,4 @@
+
 type Token @entity {
   "ID (address)"
   id: ID!
@@ -46,8 +47,8 @@ type Candle @entity {
     time: Int!
     period: Int!
     lastBlock: Int!
-    token0: Token!
-    token1: Token!
+    token0: Token! @derivedFrom(field: "id")
+    token1: Token! @derivedFrom(field: "id")
     lastBnbPrice: BigDecimal!
     token0TotalAmount: BigDecimal!
     token1TotalAmount: BigDecimal!
