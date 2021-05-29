@@ -105,6 +105,10 @@ export function handleSwap(event: Swap): void {
             candle.token1 = pair.token1;
             candle.token0Symbol = token0.symbol;
             candle.token1Symbol = token1.symbol;
+            candle.token0Id = token0.id;
+            candle.token1Id = token1.id;
+            candle.token0Name = token0.name;
+            candle.token1Name = token1.name;
             candle.token0createdAt = token0.createdAt;
             candle.token1createdAt = token1.createdAt;
             candle.open = price;

@@ -47,8 +47,12 @@ type Candle @entity {
     time: Int!
     period: Int!
     lastBlock: Int!
+    token0Id: String!,
+    token1Id: String!,
     token0Symbol: String!,
     token1Symbol: String!,
+    token0Name: String!,
+    token1Name: String!,
     token0: Token!
     token1: Token!
     token0createdAt: Int!
