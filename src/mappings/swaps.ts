@@ -5,7 +5,7 @@ import { PairCreated } from '../types/Factory/Factory'
 import { Pair as PairTemplate } from '../types/templates'
 import { Pair, Candle, Bundle, Token } from '../types/schema'
 import { ZERO_BD, fetchTokenDecimals, fetchTokenName, fetchTokenSymbol, convertTokenToDecimal } from './utils'
-import { findBnbPerToken, getBnbPriceInUSD, getBNBQuotePrice } from './utils/pricing'
+import { findBnbPerToken, getBnbPriceInUSD, getBNBQuotePrice, WBNB_ADDRESS } from './utils/pricing'
 
 export function handleNewPair(event: PairCreated): void {
     let bundle = new Bundle("1");
@@ -74,7 +74,11 @@ export function handleSwap(event: Swap): void {
         return;
     }
 
-    let price = token0Amount.div(token1Amount);
+    let price = token1Amount.div(token0Amount);
+    if (token0.id == WBNB_ADDRESS) {
+        price = token0Amount.div(token1Amount)
+    }
+
     let tokens = concat(Bytes.fromHexString(pair.token0), Bytes.fromHexString(pair.token1));
     let timestamp = event.block.timestamp.toI32();
 
