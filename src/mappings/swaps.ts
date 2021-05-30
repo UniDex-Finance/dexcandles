@@ -105,6 +105,7 @@ export function handleSwap(event: Swap): void {
         transaction.time = timestamp;
         transaction.from = event.params.sender.toHex();
         transaction.to = event.params.to.toHex();
+        transaction.block = event.block.number.toI32();
         transaction.swapType = swapType;
         transaction.transactionAmount = trxAmount;
         transaction.transactionAmountInUSD = transaction.transactionAmount.times(getBNBQuotePrice());
