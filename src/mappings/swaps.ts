@@ -3,8 +3,8 @@ import { concat } from '@graphprotocol/graph-ts/helper-functions'
 import { Swap, Sync } from '../types/templates/Pair/Pair'
 import { PairCreated } from '../types/Factory/Factory'
 import { Pair as PairTemplate } from '../types/templates'
-import { Pair, Candle, Bundle, Token } from '../types/schema'
-import { ZERO_BD, fetchTokenDecimals, fetchTokenName, fetchTokenSymbol, convertTokenToDecimal } from './utils'
+import { Pair, Candle, Bundle, Token, Transaction } from '../types/schema'
+import { ZERO_BD, fetchTokenDecimals, fetchTokenName, fetchTokenSymbol, convertTokenToDecimal, ZERO_BI } from './utils'
 import { findBnbPerToken, getBnbPriceInUSD, getBNBQuotePrice, fetchReserve } from './utils/pricing'
 
 let WBNB_ADDRESS = "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c";
@@ -76,14 +76,40 @@ export function handleSwap(event: Swap): void {
         return;
     }
 
+    let swapType = "buy";
+    if (token0Amount > ZERO_BD) {
+        swapType = "sell";
+    }
+
     let price = token1Amount.div(token0Amount);
+    let trxAmount: BigDecimal = token1Amount;
     if (token0.id == WBNB_ADDRESS) {
         price = token0Amount.div(token1Amount)
+        trxAmount = token0Amount;
     }
 
     let tokens = concat(Bytes.fromHexString(pair.token0), Bytes.fromHexString(pair.token1));
     let timestamp = event.block.timestamp.toI32();
-
+    let trxId = concat(Bytes.fromI32(timestamp), tokens).toHex();
+    let transaction = Transaction.load(trxId);
+    if (transaction == null) {
+        transaction = new Transaction(trxId);
+        transaction.token0 = token0.id;
+        transaction.token1 = token1.id;
+        transaction.token0Name = token0.name;
+        transaction.token1Name = token1.name;
+        transaction.token0Symbol = token0.symbol;
+        transaction.token1Symbol = token1.symbol;
+        transaction.token0Id = token0.id;
+        transaction.token1Id = token1.id;
+        transaction.time = timestamp;
+        transaction.from = event.params.sender.toHex();
+        transaction.to = event.params.to.toHex();
+        transaction.swapType = swapType;
+        transaction.transactionAmount = trxAmount;
+        transaction.transactionAmountInUSD = transaction.transactionAmount.times(getBNBQuotePrice());
+        transaction.save();
+    }
     let periods: i32[] = [1 * 60, 5 * 60, 10 * 60, 15 * 60, 30 * 60, 60 * 60, 4 * 60 * 60, 12 * 60 * 60, 24 * 60 * 60, 7 * 24 * 60 * 60];
     for (let i = 0; i < periods.length; i++) {
         let time_id = timestamp / periods[i];

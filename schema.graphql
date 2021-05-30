@@ -41,6 +41,30 @@ type Bundle @entity {
   bnbPrice: BigDecimal!
 }
 
+enum SwapType {
+    BUY,
+    SELL
+}
+
+type Transaction @entity {
+    id: ID!, # time + tokenAddress
+    time: Int!
+    swapType: SwapType!
+    block: Int!
+    token0 : Token!
+    token1 : Token!
+    token0Id : String!
+    token1Id : String!
+    token0Name : String!
+    token1Name : String!
+    token0Symbol : String!
+    token1Symbol : String!
+    from: String!
+    to: String!
+    transactionAmount: BigDecimal!
+    transactionAmountInUSD : BigDecimal!
+}
+
 type Candle @entity {
     id: ID! # time + period + srcToken + dstToken
     time: Int!
