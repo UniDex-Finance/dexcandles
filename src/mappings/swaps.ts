@@ -72,15 +72,17 @@ export function handleSwap(event: Swap): void {
 
     let token0Amount: BigDecimal = convertTokenToDecimal(event.params.amount0In.minus(event.params.amount0Out).abs(), token0.decimals);
     let token1Amount: BigDecimal = convertTokenToDecimal(event.params.amount1Out.minus(event.params.amount1In).abs(), token1.decimals);
+    let token0AmountRaw: BigDecimal = event.params.amount0In.minus(event.params.amount0Out).toBigDecimal();
+    let token1AmountRaw: BigDecimal = event.params.amount1Out.minus(event.params.amount1In).toBigDecimal();
     if (token0Amount.equals(ZERO_BD) || token1Amount.equals(ZERO_BD)) {
         return;
     }
 
     let swapType = "BUY";
-    if (token0Amount > ZERO_BD) {
+    if (token0AmountRaw > ZERO_BD) {
         swapType = "SELL";
     }
-    if (token1Amount > ZERO_BD) {
+    if (token1AmountRaw > ZERO_BD) {
         swapType = "BUY";
     }
 
