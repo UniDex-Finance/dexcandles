@@ -76,9 +76,9 @@ export function handleSwap(event: Swap): void {
         return;
     }
 
-    let swapType = "buy";
+    let swapType = "BUY";
     if (token0Amount > ZERO_BD) {
-        swapType = "sell";
+        swapType = "SELL";
     }
 
     let price = token1Amount.div(token0Amount);
