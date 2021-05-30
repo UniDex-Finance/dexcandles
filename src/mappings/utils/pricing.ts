@@ -135,7 +135,7 @@ export function exponentToBigInt(decimals: BigInt): BigInt {
     return bd;
 }
 
-export function fetchReserve(address: Address): [BigInt, BigInt] {
+export function fetchReserve(address: Address): BigInt[] {
     let pair = PairContract.bind(address);
     let pairData = pair.try_getReserves();
     if (pairData.reverted) {
