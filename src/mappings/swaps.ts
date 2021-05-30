@@ -93,8 +93,7 @@ export function handleSwap(event: Swap): void {
     let swapType = "BUY";
     if (token0AmountRaw > ZERO_BD) {
         swapType = "SELL";
-    }
-    if (token1AmountRaw > ZERO_BD) {
+    } else if (token1AmountRaw > ZERO_BD) {
         swapType = "BUY";
     }
 
