@@ -109,6 +109,9 @@ export function handleSwap(event: Swap): void {
     let timestamp = event.block.timestamp.toI32();
     let trxId = concat(Bytes.fromI32(timestamp), tokens).toHex();
     let transaction = Transaction.load(trxId);
+    pair.reserve0 = convertTokenToDecimal(fetchReserve(Address.fromString(pair.id))[0], token0.decimals);
+    pair.reserve1 = convertTokenToDecimal(fetchReserve(Address.fromString(pair.id))[1], token1.decimals);
+    pair.save();
     if (transaction == null) {
         transaction = new Transaction(trxId);
         transaction.token0 = token0.id;
