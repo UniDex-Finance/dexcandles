@@ -61,6 +61,7 @@ type Transaction @entity {
     token1Symbol : String!
     from: String!
     to: String!
+    hash: String,
     transactionAmount: BigDecimal!
     transactionAmountInUSD : BigDecimal!
 }
