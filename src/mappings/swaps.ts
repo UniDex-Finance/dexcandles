@@ -4,7 +4,7 @@ import { Swap, Sync } from '../types/templates/Pair/Pair'
 import { PairCreated } from '../types/Factory/Factory'
 import { Pair as PairTemplate } from '../types/templates'
 import { Pair, Candle, Bundle, Token, Transaction } from '../types/schema'
-import { ZERO_BD, fetchTokenDecimals, fetchTokenName, fetchTokenSymbol, convertTokenToDecimal, ZERO_BI, fetchTokenSupply } from './utils'
+import { ZERO_BD, fetchTokenSupply, fetchTokenDecimals, fetchTokenName, fetchTokenSymbol, convertTokenToDecimal, ZERO_BI } from './utils'
 import { findBnbPerToken, getBnbPriceInUSD, getBNBQuotePrice, fetchReserve } from './utils/pricing'
 
 let WBNB_ADDRESS = "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c";

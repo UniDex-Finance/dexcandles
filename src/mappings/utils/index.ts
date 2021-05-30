@@ -82,3 +82,13 @@ export function fetchTokenDecimals(tokenAddress: Address): BigInt {
     }
     return BigInt.fromI32(decimalValue as i32);
 }
+
+export function fetchTokenSupply(tokenAddress: Address): BigInt {
+    let contract = BEP20.bind(tokenAddress);
+    let decimalValue: BigInt = ZERO_BI;
+    let decimalResult = contract.try_totalSupply();
+    if (!decimalResult.reverted) {
+        decimalValue = decimalResult.value;
+    }
+    return decimalValue;
+}
