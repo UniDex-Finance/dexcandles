@@ -8,6 +8,10 @@ type Token @entity {
   symbol: String!
   "Decimals"
   decimals: BigInt!
+  "Supply"
+  supply: BigInt!
+  "TotalTransactions"
+  totalTransactions: BigInt!
   # liquidity across all pairs
   totalLiquidity: BigDecimal!
   # derived prices

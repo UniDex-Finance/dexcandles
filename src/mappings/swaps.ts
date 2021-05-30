@@ -4,7 +4,7 @@ import { Swap, Sync } from '../types/templates/Pair/Pair'
 import { PairCreated } from '../types/Factory/Factory'
 import { Pair as PairTemplate } from '../types/templates'
 import { Pair, Candle, Bundle, Token, Transaction } from '../types/schema'
-import { ZERO_BD, fetchTokenDecimals, fetchTokenName, fetchTokenSymbol, convertTokenToDecimal, ZERO_BI } from './utils'
+import { ZERO_BD, fetchTokenDecimals, fetchTokenName, fetchTokenSymbol, convertTokenToDecimal, ZERO_BI, fetchTokenSupply } from './utils'
 import { findBnbPerToken, getBnbPriceInUSD, getBNBQuotePrice, fetchReserve } from './utils/pricing'
 
 let WBNB_ADDRESS = "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c";
@@ -26,6 +26,12 @@ export function handleNewPair(event: PairCreated): void {
         if (decimals === null) {
             return;
         }
+        let supply = fetchTokenSupply(event.params.token0);
+        if (supply === null) {
+            supply = ZERO_BI;
+        }
+        token0.supply = supply;
+        token0.totalTransactions = ZERO_BI
         token0.decimals = decimals;
         token0.derivedBNB = ZERO_BD;
         token0.derivedUSD = ZERO_BD;
@@ -43,7 +49,13 @@ export function handleNewPair(event: PairCreated): void {
         if (decimals === null) {
             return;
         }
+        let supply = fetchTokenSupply(event.params.token1);
+        if (supply === null) {
+            supply = ZERO_BI;
+        }
+        token1.supply = supply;
         token1.decimals = decimals;
+        token1.totalTransactions = ZERO_BI
         token1.derivedBNB = ZERO_BD;
         token1.derivedUSD = ZERO_BD;
         token1.totalLiquidity = ZERO_BD;
@@ -116,6 +128,8 @@ export function handleSwap(event: Swap): void {
         transaction.transactionAmount = trxAmount;
         transaction.transactionAmountInUSD = transaction.transactionAmount.times(getBNBQuotePrice());
         transaction.save();
+        token0.totalTransactions = token0.totalTransactions.plus(BigInt.fromI32(1));
+        token1.totalTransactions = token1.totalTransactions.plus(BigInt.fromI32(1));
     }
     let periods: i32[] = [1 * 60, 5 * 60, 10 * 60, 15 * 60, 30 * 60, 60 * 60, 4 * 60 * 60, 12 * 60 * 60, 24 * 60 * 60, 7 * 24 * 60 * 60];
     for (let i = 0; i < periods.length; i++) {
