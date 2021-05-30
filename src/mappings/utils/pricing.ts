@@ -3,6 +3,7 @@ import { BigDecimal, Address, BigInt } from "@graphprotocol/graph-ts/index";
 import { Pair, Bundle, Token } from "../../types/schema";
 import { ZERO_BD, factoryContract, ADDRESS_ZERO, ONE_BD, fetchTokenSymbol, fetchTokenName, fetchTokenDecimals, ZERO_BI } from "./index";
 import { Router } from "../../types/Factory/Router";
+import { Pair as PairContract } from "../../types/templates/Pair/Pair";
 import { exponentToBigDecimal, ONE_BI } from "./index";
 
 let ROUTER_ADDRESS = "0x10ED43C718714eb63d5aA57B78B54704E256024E";
@@ -132,6 +133,19 @@ export function exponentToBigInt(decimals: BigInt): BigInt {
         bd = bd.times(BigInt.fromI32(10));
     }
     return bd;
+}
+
+export function fetchReserve(address: Address): [BigInt, BigInt] {
+    let pair = PairContract.bind(address);
+    let pairData = pair.try_getReserves();
+    if (pairData.reverted) {
+        return [ZERO_BI, ZERO_BI];
+    }
+    let reserveData = pairData.value;
+    // if (pair.token1() == Address.fromString(WBNB_ADDRESS)) {
+    //     return [reserveData.value1, reserveData.value0];
+    // }
+    return [reserveData.value0, reserveData.value1];
 }
 
 export function getBNBQuotePrice(): BigDecimal {

@@ -5,7 +5,7 @@ import { PairCreated } from '../types/Factory/Factory'
 import { Pair as PairTemplate } from '../types/templates'
 import { Pair, Candle, Bundle, Token } from '../types/schema'
 import { ZERO_BD, fetchTokenDecimals, fetchTokenName, fetchTokenSymbol, convertTokenToDecimal } from './utils'
-import { findBnbPerToken, getBnbPriceInUSD, getBNBQuotePrice } from './utils/pricing'
+import { findBnbPerToken, getBnbPriceInUSD, getBNBQuotePrice, fetchReserve } from './utils/pricing'
 
 let WBNB_ADDRESS = "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c";
 
@@ -55,8 +55,8 @@ export function handleNewPair(event: PairCreated): void {
     pair.factory = '0xcA143Ce32Fe78f1f7019d7d551a6402fC5350c73';
     pair.token0Price = ZERO_BD;
     pair.token1Price = ZERO_BD;
-    pair.reserve0 = ZERO_BD;
-    pair.reserve1 = ZERO_BD;
+    pair.reserve0 = convertTokenToDecimal(fetchReserve(Address.fromString(pair.id))[0], token0.decimals);
+    pair.reserve1 = convertTokenToDecimal(fetchReserve(Address.fromString(pair.id))[1], token1.decimals);
     pair.reserveBNB = ZERO_BD;
     pair.reserveUSD = ZERO_BD;
     pair.createdAt = timestamp;
@@ -137,7 +137,7 @@ export function handleSwap(event: Swap): void {
         candle.lastBlock = event.block.number.toI32();
         candle.token0TotalAmount = candle.token0TotalAmount.plus(token0Amount);
         candle.token1TotalAmount = candle.token1TotalAmount.plus(token1Amount);
-        if (token1.id == '0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c') {
+        if (token1.id == WBNB_ADDRESS) {
             candle.tradeAmountUSD = candle.token1TotalAmount.times(bundle.bnbPrice);
         } else {
             candle.tradeAmountUSD = candle.token0TotalAmount.times(bundle.bnbPrice);
