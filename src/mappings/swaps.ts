@@ -165,7 +165,7 @@ export function handleSync(event: Sync): void {
     else pair.token1Price = ZERO_BD;
 
     let bundle = Bundle.load("1");
-    bundle.bnbPrice = getBnbPriceInUSD();
+    bundle.bnbPrice = getBNBQuotePrice();
     bundle.save();
 
     let t0DerivedBNB = findBnbPerToken(token0 as Token);
