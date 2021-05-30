@@ -20,6 +20,8 @@ dataSources:
         - Pair
         - Token
       abis:
+        - name: Pair
+          file: ./abis/pair.json
         - name: Factory
           file: ./abis/factory.json
         - name: BEP20
