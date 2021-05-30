@@ -131,6 +131,17 @@ export function handleSwap(event: Swap): void {
         token0.totalTransactions = token0.totalTransactions.plus(BigInt.fromI32(1));
         token1.totalTransactions = token1.totalTransactions.plus(BigInt.fromI32(1));
     }
+    let bnbPrice = getBNBQuotePrice();
+    let t0DerivedBNB = findBnbPerToken(token0 as Token);
+    token0.derivedBNB = t0DerivedBNB;
+    token0.derivedUSD = t0DerivedBNB.times(bnbPrice);
+    token0.save();
+
+    let t1DerivedBNB = findBnbPerToken(token1 as Token);
+    token1.derivedBNB = t1DerivedBNB;
+    token1.derivedUSD = t1DerivedBNB.times(bnbPrice);
+    token1.save();
+
     let periods: i32[] = [1 * 60, 5 * 60, 10 * 60, 15 * 60, 30 * 60, 60 * 60, 4 * 60 * 60, 12 * 60 * 60, 24 * 60 * 60, 7 * 24 * 60 * 60];
     for (let i = 0; i < periods.length; i++) {
         let time_id = timestamp / periods[i];
@@ -139,16 +150,6 @@ export function handleSwap(event: Swap): void {
         let bundle = Bundle.load("1");
         bundle.bnbPrice = getBNBQuotePrice();
         bundle.save();
-
-        let t0DerivedBNB = findBnbPerToken(token0 as Token);
-        token0.derivedBNB = t0DerivedBNB;
-        token0.derivedUSD = t0DerivedBNB.times(bundle.bnbPrice);
-        token0.save();
-
-        let t1DerivedBNB = findBnbPerToken(token1 as Token);
-        token1.derivedBNB = t1DerivedBNB;
-        token1.derivedUSD = t1DerivedBNB.times(bundle.bnbPrice);
-        token1.save();
 
         if (candle === null) {
             candle = new Candle(candle_id);
