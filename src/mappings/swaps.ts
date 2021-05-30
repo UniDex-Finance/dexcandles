@@ -30,7 +30,7 @@ export function handleNewPair(event: PairCreated): void {
         if (supply === null) {
             supply = ZERO_BI;
         }
-        token0.supply = supply;
+        token0.supply = convertTokenToDecimal(supply, decimals);
         token0.totalTransactions = ZERO_BI
         token0.decimals = decimals;
         token0.derivedBNB = ZERO_BD;
@@ -53,7 +53,7 @@ export function handleNewPair(event: PairCreated): void {
         if (supply === null) {
             supply = ZERO_BI;
         }
-        token1.supply = supply;
+        token1.supply = convertTokenToDecimal(supply, decimals);
         token1.decimals = decimals;
         token1.totalTransactions = ZERO_BI
         token1.derivedBNB = ZERO_BD;

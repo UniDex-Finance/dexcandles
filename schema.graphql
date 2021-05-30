@@ -9,7 +9,7 @@ type Token @entity {
   "Decimals"
   decimals: BigInt!
   "Supply"
-  supply: BigInt!
+  supply: BigDecimal!
   "TotalTransactions"
   totalTransactions: BigInt!
   # liquidity across all pairs
