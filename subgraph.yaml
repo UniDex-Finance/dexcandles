@@ -63,3 +63,5 @@ templates:
       eventHandlers:
         - event: Swap(indexed address,uint256,uint256,uint256,uint256,indexed address)
           handler: handleSwap
+        - event: Sync(uint112,uint112)
+          handler: handleSync
