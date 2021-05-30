@@ -80,6 +80,9 @@ export function handleSwap(event: Swap): void {
     if (token0Amount > ZERO_BD) {
         swapType = "SELL";
     }
+    if (token1Amount > ZERO_BD) {
+        swapType = "BUY";
+    }
 
     let price = token1Amount.div(token0Amount);
     let trxAmount: BigDecimal = token1Amount;
