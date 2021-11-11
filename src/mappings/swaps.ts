@@ -21,7 +21,7 @@ export function handleSwap(event: Swap): void {
     if (token0Amount.isZero() || token1Amount.isZero()) {
         return;
     }
-    
+
     let pair = Pair.load(event.address.toHex());
     let price = token0Amount.divDecimal(token1Amount.toBigDecimal());
     let tokens = concat(pair.token0, pair.token1);
@@ -34,6 +34,7 @@ export function handleSwap(event: Swap): void {
         let candle = Candle.load(candle_id);
         if (candle === null) {
             candle = new Candle(candle_id);
+            candle.pairId = pair.id;
             candle.time = timestamp;
             candle.period = periods[i];
             candle.token0 = pair.token0;

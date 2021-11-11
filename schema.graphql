@@ -7,6 +7,7 @@ type Pair @entity {
 
 type Candle @entity {
     id: ID! # time + period + srcToken + dstToken
+    pairId: ID!
     time: Int!
     period: Int!
     lastBlock: Int!
