@@ -9,7 +9,7 @@ export function handleNewPair(event: PairCreated): void {
     let pair = new Pair(event.params.pair.toHex());
     pair.token0 = event.params.token0;
     pair.token1 = event.params.token1;
-    pair.factory = '0xcA143Ce32Fe78f1f7019d7d551a6402fC5350c73';
+    pair.factory = '0xc35dadb65012ec5796536bd9864ed8773abc74c4';
     pair.save();
 
     PairTemplate.create(event.params.pair)
